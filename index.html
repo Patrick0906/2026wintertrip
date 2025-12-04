@@ -65,16 +65,6 @@
         }
       }
     </script>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-  }
-}
-</script>
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
 
@@ -227,8 +217,9 @@
 
     // Helper: Map Links
     function getGoogleMapsUrl(query) {
-        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-    }
+    // 使用標準 Google Maps 搜尋連結，並加上 https 和正確的 $ 符號
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
     function getMapLink(query) {
         if (CUSTOM_LINKS[query]) return CUSTOM_LINKS[query];
         return getGoogleMapsUrl(query);
@@ -604,11 +595,14 @@
         });
 
         // FAB Listener
-        document.getElementById('fab-map').onclick = () => {
-            const day = TRIP_DATA[selectedDayIndex];
-            const query = `${day.route} 日本`;
-            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
-        };
+document.getElementById('fab-map').onclick = () => {
+    const day = TRIP_DATA[selectedDayIndex];
+    const query = `${day.route} 日本`;
+    // 舊的寫法： window.open(`http://googleusercontent...`, '_blank');
+    
+    // 👇 請改成這樣：
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
+};
 
         // Initial Render
         renderDay(0);
