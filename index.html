@@ -558,7 +558,7 @@
         if(activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
-    // INIT
+// INIT
     (function init() {
         const nav = document.getElementById('nav-container');
         
@@ -578,12 +578,16 @@
             const prevTheme = index > 0 ? (index-1 > 12 ? "帰路" : index-1 > 9 ? "風紋の記憶" : index-1 > 6 ? "蘇りの道" : index-1 > 2 ? "雪の北国" : "神話の地") : null;
             
             if (theme !== prevTheme) {
-                nav.innerHTML += `<div class="flex-shrink-0 flex items-center justify-center pl-1 pr-3 snap-start h-[4.5rem]"><div class="h-full flex items-center border-l-2 border-stone-300/30 pl-2"><span class="text-[10px] font-serif font-medium text-sumi-light/70 tracking-widest vertical-rl h-auto whitespace-nowrap">${theme}</span></div></div>`;
+                // 🔴 修正處：改用 createElement，不要用 innerHTML += 破壞原本的按鈕
+                const themeDiv = document.createElement('div');
+                themeDiv.className = "flex-shrink-0 flex items-center justify-center pl-1 pr-3 snap-start h-[4.5rem]";
+                themeDiv.innerHTML = `<div class="h-full flex items-center border-l-2 border-stone-300/30 pl-2"><span class="text-[10px] font-serif font-medium text-sumi-light/70 tracking-widest vertical-rl h-auto whitespace-nowrap">${theme}</span></div>`;
+                nav.appendChild(themeDiv);
             }
 
             const btn = document.createElement('button');
             btn.dataset.idx = index;
-            // Directly attach listener
+            // Directly attach listener (現在這裡安全了，因為我們沒有破壞它)
             btn.addEventListener('click', () => renderDay(index));
             
             btn.innerHTML = `
@@ -595,14 +599,11 @@
         });
 
         // FAB Listener
-document.getElementById('fab-map').onclick = () => {
-    const day = TRIP_DATA[selectedDayIndex];
-    const query = `${day.route} 日本`;
-    // 舊的寫法： window.open(`http://googleusercontent...`, '_blank');
-    
-    // 👇 請改成這樣：
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
-};
+        document.getElementById('fab-map').onclick = () => {
+            const day = TRIP_DATA[selectedDayIndex];
+            const query = `${day.route} 日本`;
+            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
+        };
 
         // Initial Render
         renderDay(0);
