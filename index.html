@@ -1536,10 +1536,11 @@
         return cleaned.replace(/\s+/g, ' ').trim();
     }
 
-    function getGoogleMapsUrl(query) {
-    // 修正：改成 https，加上 $ 符號，並使用標準 Google Maps 搜尋網址
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-}
+   function getGoogleMapsUrl(query) {
+        // 使用 Google 官方標準 API 網址，這能觸發手機的 Universal Link 機制喚醒 App
+        // 修正了原本的 $ 符號缺失問題
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    }
 
     function getMapLink(query) {
         if (customLinks[query]) return customLinks[query];
@@ -2114,14 +2115,16 @@
         fetchWeather(day.route);
         
        // Setup Map Button
-document.getElementById('fab-map').onclick = function() {
-    const query = `${day.route} 日本`;
-    // 舊的錯誤寫法
-    // window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
-    
-    // 👇 請改成這樣：
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`, '_blank');
-};
+        document.getElementById('fab-map').onclick = function() {
+            const day = TRIP_DATA[state.selectedDayIndex]; // 確保抓到正確的當天資料
+            const query = `${day.route} 日本`;
+            
+            // 使用上面定義好的標準函式，確保行為一致
+            const url = getGoogleMapsUrl(query);
+            
+            // '_blank' 讓電腦版開新分頁，手機版則會嘗試喚醒 App
+            window.open(url, '_blank');
+        };
         
         lucide.createIcons();
     }
