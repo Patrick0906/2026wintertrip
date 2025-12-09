@@ -2,19 +2,29 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>神訪う冬の旅路 - 冬凪の日本縦断プロジェクト</title>
     
-    <!-- Tailwind CSS -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F7F5F0">
+    <link rel="icon" type="image/png" href="./icon.png"> 
+    <link rel="apple-touch-icon" href="./icon.png">
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW fail', err));
+        });
+      }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600&family=Zen+Old+Mincho:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <script>
       tailwind.config = {
@@ -55,17 +65,10 @@
         overflow-x: hidden;
       }
       /* Hide scrollbar */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-      .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       /* Vertical text utility */
-      .writing-vertical-rl {
-          writing-mode: vertical-rl;
-      }
+      .writing-vertical-rl { writing-mode: vertical-rl; }
     </style>
 </head>
 <body class="bg-washi text-sumi relative min-h-screen">
